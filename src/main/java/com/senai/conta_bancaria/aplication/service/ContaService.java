@@ -4,11 +4,11 @@ import com.senai.conta_bancaria.aplication.dto.ContaDTO;
 import com.senai.conta_bancaria.aplication.dto.ValorDTO;
 import com.senai.conta_bancaria.domain.entity.Cliente;
 import com.senai.conta_bancaria.domain.entity.Conta;
+import com.senai.conta_bancaria.domain.entity.ContaCorrente;
 import com.senai.conta_bancaria.domain.repository.ClienteRepository;
 import com.senai.conta_bancaria.domain.repository.ContaRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,9 +62,9 @@ public class ContaService {
             existente.setCliente(null);
         }
 
-//        if(existente instanceof ContaCorrente){
-//            ContaCorrente contaCorrente = (ContaCorrente) existente;
-//        }
+       if(existente instanceof ContaCorrente){
+           ContaCorrente contaCorrente = (ContaCorrente) existente;
+        }
 
         Conta atualizado = contaRepository.save(existente);
         return ContaDTO.fromEntity(atualizado);
