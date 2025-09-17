@@ -8,8 +8,9 @@ import com.senai.conta_bancaria.domain.entity.ContaPoupanca;
 import com.senai.conta_bancaria.domain.entity.TipoConta;
 import com.senai.conta_bancaria.domain.repository.ClienteRepository;
 import com.senai.conta_bancaria.domain.repository.ContaRepository;
-import jakarta.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
