@@ -3,13 +3,13 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.boot.model.source.spi.InheritanceType;
+
 import java.math.BigDecimal;
 
 @Data
 @Entity
-@Inheritance(Strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "tipo_conta", discriminatorType = DiscriminatorType.STRING, length = 20
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tipo_conta", discriminatorType = DiscriminatorType.STRING, length = 20)
 @Table(name = "conta",
         uniqueConstraints = {
             @UniqueConstraint(name = "uk_conta_numero", columnNames = "numero"),
