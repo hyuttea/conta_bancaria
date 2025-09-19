@@ -1,7 +1,5 @@
 package com.senai.conta_bancaria.interface_ui.controller;
 
-import com.senai.conta_bancaria.aplication.dto.ContaDTO;
-import com.senai.conta_bancaria.aplication.dto.ValorDTO;
 import com.senai.conta_bancaria.aplication.service.ContaService;
 import org.springframework.web.bind.annotation.*;
 

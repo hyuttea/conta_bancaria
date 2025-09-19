@@ -1,7 +1,5 @@
 package com.senai.conta_bancaria.aplication.service;
 
-import com.senai.conta_bancaria.aplication.dto.ContaDTO;
-import com.senai.conta_bancaria.aplication.dto.ValorDTO;
 import com.senai.conta_bancaria.domain.entity.Cliente;
 import com.senai.conta_bancaria.domain.entity.Conta;
 import com.senai.conta_bancaria.domain.entity.ContaCorrente;
