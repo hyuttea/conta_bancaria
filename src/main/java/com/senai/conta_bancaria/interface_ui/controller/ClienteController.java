@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/cliente")
@@ -24,5 +25,8 @@ public class ClienteController {
                 URI.create("/api/cliente/cpf/"+novoCliente.cpf())).body(novoCliente);
 
     }
-
+    @GetMapping
+    public ResponseEntity<List<ClienteResponseDTO> listarClienntesAtivos(){
+        return ResponseEntity.ok(service.listarClientesAtivos());
+    }
 }

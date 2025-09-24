@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -25,5 +27,9 @@ public class ClienteService {
         cliente.getContas().add(novaConta);
 
         return new ClienteResponseDTO.fromEntity(clienteRepository.save(cliente));
+    }
+
+    public List<ClienteResponseDTO> listarClientesAtivos() {
+        return clienteRepository.findByCpfAndAtivoTrue().stream().map(ClienteResponseDTO::fromEntity).toList()
     }
 }
