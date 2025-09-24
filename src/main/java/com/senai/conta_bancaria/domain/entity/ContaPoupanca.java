@@ -7,13 +7,22 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-@EqualsAndHashCode(callSuper = true)
+import java.math.BigDecimal;
+
+
 @Entity
-@Data
 @DiscriminatorValue("POUPANCA")
+@Data
 @SuperBuilder
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class ContaPoupanca extends Conta{
-   @Column(precision = 10, scale = 4)
-    private Double rendimento;
+
+    @Column(precision=10, scale=4)
+    private BigDecimal rendimento;
+
+    @Override
+    public String getTipo() {
+        return "POUPANCA";
+    }
 }
