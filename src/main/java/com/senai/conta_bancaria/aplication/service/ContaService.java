@@ -1,84 +1,62 @@
 package com.senai.conta_bancaria.aplication.service;
-
-import com.senai.conta_bancaria.domain.entity.Cliente;
+import com.senai.conta_bancaria.aplication.dto.ContaAtualizacaoDTO;
+import com.senai.conta_bancaria.aplication.dto.ContaResumoDTO;
 import com.senai.conta_bancaria.domain.entity.Conta;
 import com.senai.conta_bancaria.domain.entity.ContaCorrente;
-import com.senai.conta_bancaria.domain.repository.ClienteRepository;
+import com.senai.conta_bancaria.domain.entity.ContaPoupanca;
 import com.senai.conta_bancaria.domain.repository.ContaRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 @Transactional
 public class ContaService {
-    private final ContaRepository contaRepository;
-    private final ClienteRepository clienteRepository;
+    private final ContaRepository repository;
 
-    public ContaService(ContaRepository contaRepository, ClienteRepository clienteRepository) {
-        this.contaRepository = contaRepository;
-        this.clienteRepository = clienteRepository;
-    }
-
-    public ContaDTO salvarConta(ContaDTO dto) {
-        Cliente cliente = clienteRepository.findById(dto.clienteId()).orElse(null);
-        Conta salvo = contaRepository.save(dto.toEntity(cliente));
-        return ContaDTO.fromEntity(salvo);
+    @Transactional(readOnly = true)
+    public List<ContaResumoDTO> listarTodasContas() {
+        return repository.findAllByAtivaTrue().stream()
+                .map(ContaResumoDTO::fromEntity).toList();
     }
 
     @Transactional(readOnly = true)
-    public List<ContaDTO> listarConta() {
-        return contaRepository.findAll()
-                .stream()
-                .map(ContaDTO::fromEntity)
-                .toList();
+    public ContaResumoDTO buscarContaPorNumero(String numero) {
+        return ContaResumoDTO.fromEntity(
+                repository.findByNumeroAndAtivaTrue(numero)
+                        .orElseThrow(() -> new RuntimeException("Conta não encontrada"))
+        );
     }
 
-    @Transactional(readOnly = true)
-    public ContaDTO buscarContaPorId(String id) {
-        Optional<Conta> contaOptional = contaRepository.findById(id);
-        if (contaOptional.isEmpty()) return null;
+    public ContaResumoDTO atualizarConta(String numeroConta, ContaAtualizacaoDTO dto) {
+        var conta = buscaContaAtivaPorNumero(numeroConta);
 
-        Conta conta = contaOptional.get();
-
-        return ContaDTO.fromEntity(conta);
-    }
-
-    public ContaDTO atualizarConta(String id, ContaDTO dto) {
-        Optional<Conta> contaOptional = contaRepository.findById(id);
-        if (contaOptional.isEmpty()) return null;
-
-        Conta existente = contaOptional.get();
-        existente.setNumero(dto.numero());
-        existente.setSaldo(dto.saldo());
-
-        if (dto.clienteId() != null) {
-            Optional<Cliente> clienteOptional = clienteRepository.findById(dto.clienteId());
-            clienteOptional.ifPresent(existente::setCliente);
-        } else {
-            existente.setCliente(null);
+        if(conta instanceof ContaPoupanca poupanca){
+            poupanca.setRendimento(dto.rendimento());
+        } else if (conta instanceof ContaCorrente corrente) {
+            corrente.setLimite(dto.limite());
+            corrente.setTaxa(dto.taxa());
         }
-
-       if(existente instanceof ContaCorrente){
-           ContaCorrente contaCorrente = (ContaCorrente) existente;
-        }
-
-        Conta atualizado = contaRepository.save(existente);
-        return ContaDTO.fromEntity(atualizado);
+        conta.setSaldo(dto.saldo());
+        return ContaResumoDTO.fromEntity(repository.save(conta));
+    }
+    public void deletarConta(String numeroDaConta) {
+        var conta = buscaContaAtivaPorNumero(numeroDaConta);
+        conta.setAtiva(false);
+        repository.save(conta);
+    }
+    private Conta buscaContaAtivaPorNumero(String numeroDaConta) {
+        return repository.findByNumeroAndAtivaTrue(numeroDaConta).orElseThrow(
+                () -> new RuntimeException("Conta não encontrada.")
+        );
     }
 
-    public ContaDTO depositar(String id, ValorDTO dto){
-        Optional<Conta> contaOptional = contaRepository.findById(id);
-        if (contaOptional.isEmpty()) return null;
-
-        Conta existente = contaOptional.get();
-        existente.setSaldo(existente.getSaldo() + dto.valor());
-
-        return ContaDTO.fromEntity(existente);
-    }
-
-    public void deletarConta(String id) {
-        contaRepository.deleteById(id);
+    public ContaResumoDTO sacar(String numeroConta, BigDecimal valor) {
+        var conta = buscaContaAtivaPorNumero(numeroConta);
+        conta.sacar(valor);
+        return ContaResumoDTO.fromEntity(repository.save(conta));
     }
 }

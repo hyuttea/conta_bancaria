@@ -15,7 +15,8 @@ import java.util.List;
         name = "cliente",
         uniqueConstraints = @UniqueConstraint(name = "uk_cliente_cpf", columnNames = "cpf")
 )
-public class Cliente{
+public class Cliente {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -30,6 +31,7 @@ public class Cliente{
     private List<Conta> contas;
 
     @Column(nullable = false)
-    private boolean ativo;
+    private Boolean ativo;
+
 }
 

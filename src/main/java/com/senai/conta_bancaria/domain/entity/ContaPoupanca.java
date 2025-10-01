@@ -10,6 +10,7 @@ import lombok.experimental.SuperBuilder;
 import java.math.BigDecimal;
 
 
+
 @Entity
 @DiscriminatorValue("POUPANCA")
 @Data
