@@ -5,6 +5,7 @@ import com.senai.conta_bancaria.domain.entity.Cliente;
 
 import java.util.List;
 
+
 public record ClienteResponseDTO(
         String id,
         String nome,

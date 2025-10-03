@@ -14,10 +14,11 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @SuperBuilder
-public class ContaCorrente extends Conta{
-    @Column(precision=19, scale=2)
+public class ContaCorrente extends Conta {
+    @Column(precision = 19, scale = 2)
     private BigDecimal limite;
-    @Column(precision=19, scale=4)
+
+    @Column(precision = 19, scale = 4)
     private BigDecimal taxa;
 
     @Override
@@ -27,9 +28,7 @@ public class ContaCorrente extends Conta{
 
     @Override
     public void sacar(BigDecimal valor) {
-        if (valor.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("O valor de saque deve ser maior que zero.");
-        }
+        validarValorMaiorQueZero(valor);
 
         BigDecimal custoSaque = valor.multiply(taxa);
         BigDecimal totalSaque = valor.add(custoSaque);
@@ -37,6 +36,7 @@ public class ContaCorrente extends Conta{
         if (this.getSaldo().add(this.limite).compareTo(totalSaque) < 0) {
             throw new IllegalArgumentException("Saldo insuficiente para o saque.");
         }
-        this.setSaldo(this.getSaldo().subtract(valor));
+
+        this.setSaldo(this.getSaldo().subtract(totalSaque));
     }
 }

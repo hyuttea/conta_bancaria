@@ -6,6 +6,7 @@ import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 
+
 @Entity
 @Data
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -39,12 +40,29 @@ public abstract class Conta {
     public abstract String getTipo();
 
     public void sacar(BigDecimal valor) {
-        if (valor.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("O valor de saque deve ser maior que zero.");
-        }
+        validarValorMaiorQueZero(valor);
         if (this.saldo.compareTo(valor) < 0) {
             throw new IllegalArgumentException("Saldo insuficiente para o saque.");
         }
         this.saldo = this.saldo.subtract(valor);
+    }
+    public void depositar(BigDecimal valor) {
+        validarValorMaiorQueZero(valor);
+        this.saldo = this.saldo.add(valor);
+    }
+    protected static void validarValorMaiorQueZero(BigDecimal valor) {
+        if (valor.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("O valor da operação deve ser maior que zero.");
+        }
+    }
+
+
+    public void transferir(BigDecimal valor, Conta contaDestino) {
+        if (this.id.equals(contaDestino.getId())) {
+            throw new IllegalArgumentException("Não é possível transferir para a mesma conta.");
+        }
+
+        this.sacar(valor);
+        contaDestino.depositar(valor);
     }
 }
