@@ -60,7 +60,7 @@ public class ClienteService {
 
     public void deletarCliente(String cpf) {
         var cliente = repository.findByCpfAndAtivoTrue(cpf).orElseThrow(
-                () -> new RuntimeException("Cliente não encontrado.")
+                () -> new EntidadeNaoEncontradaException("Conta")
         );
         cliente.setAtivo(false);
         cliente.getContas().forEach(
