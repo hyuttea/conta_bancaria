@@ -1,5 +1,6 @@
 package com.senai.conta_bancaria.aplication.dto;
 import com.senai.conta_bancaria.domain.entity.*;
+import com.senai.conta_bancaria.domain.entity.exceptions.TipoDeContaInvalidaException;
 
 import java.math.BigDecimal;
 
@@ -27,6 +28,7 @@ public record ContaResumoDTO(
                     .cliente(cliente)
                     .build();
         }
+        throw new TipoDeContaInvalidaException();
         return null;
     }
     public static ContaResumoDTO fromEntity(Conta c) {
