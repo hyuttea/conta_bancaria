@@ -1,6 +1,7 @@
 package com.senai.conta_bancaria.aplication.service;
 import com.senai.conta_bancaria.aplication.dto.ClienteRegistroDTO;
 import com.senai.conta_bancaria.aplication.dto.ClienteResponseDTO;
+import com.senai.conta_bancaria.domain.entity.exceptions.ContaMesmoTipoException;
 import com.senai.conta_bancaria.domain.entity.exceptions.EntidadeNaoEncontradaException;
 import com.senai.conta_bancaria.domain.repository.ClienteRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,7 @@ public class ClienteService {
                 .anyMatch(c -> c.getClass().equals(novaConta.getClass()) && c.isAtiva());
 
         if(jaTemTipo)
-            throw new RuntimeException("Cliente já possui uma conta ativa deste tipo.");
+            throw new ContaMesmoTipoException();
 
         cliente.getContas().add(novaConta);
 

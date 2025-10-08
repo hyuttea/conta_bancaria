@@ -1,10 +1,8 @@
 package com.senai.conta_bancaria.interface_ui.controller;
 import com.senai.conta_bancaria.aplication.dto.ClienteRegistroDTO;
 import com.senai.conta_bancaria.aplication.dto.ClienteResponseDTO;
-import com.senai.conta_bancaria.aplication.dto.ContaResumoDTO;
 import com.senai.conta_bancaria.aplication.service.ClienteService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
