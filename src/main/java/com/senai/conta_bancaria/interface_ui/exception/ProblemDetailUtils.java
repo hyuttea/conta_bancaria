@@ -3,7 +3,6 @@ package com.senai.conta_bancaria.interface_ui.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
-
 import java.net.URI;
 import java.time.LocalDateTime;
 
