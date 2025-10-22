@@ -1,6 +1,6 @@
 package com.senai.conta_bancaria.aplication.dto;
 import com.senai.conta_bancaria.domain.entity.*;
-import com.senai.conta_bancaria.domain.entity.exceptions.TipoDeContaInvalidaException;
+import com.senai.conta_bancaria.domain.exceptions.TipoDeContaInvalidaException;
 
 import java.math.BigDecimal;
 

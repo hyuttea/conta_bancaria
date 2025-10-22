@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class AdminBootstrap implements CommandLineRunner {
+public class AdminBootStrap implements CommandLineRunner {
 
-    private final ProfessorRepository professorRepository;
+    private final GerenteRepository gerenteRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Value("${sistema.admin.email}")
@@ -20,22 +20,22 @@ public class AdminBootstrap implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        professorRepository.findByEmail(adminEmail).ifPresentOrElse(
-                prof -> {
-                    if (!prof.isAtivo()) {
-                        prof.setAtivo(true);
-                        professorRepository.save(prof);
+        gerenteRepository.findByEmail(adminEmail).ifPresentOrElse(
+                gerente -> {
+                    if (!gerente.isAtivo()) {
+                        gerente.setAtivo(true);
+                        gerenteRepository.save(gerente);
                     }
                 },
                 () -> {
-                    Professor admin = Professor.builder()
+                    Gerente admin = Gerente.builder()
                             .nome("Administrador Provisório")
                             .email(adminEmail)
                             .cpf("000.000.000-00")
                             .senha(passwordEncoder.encode(adminSenha))
                             .role(Role.ADMIN)
                             .build();
-                    professorRepository.save(admin);
+                    gerenteRepository.save(admin);
                     System.out.println("⚡ Usuário admin provisório criado: " + adminEmail);
                 }
         );

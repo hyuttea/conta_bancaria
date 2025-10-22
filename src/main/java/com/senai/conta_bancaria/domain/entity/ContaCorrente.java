@@ -1,5 +1,5 @@
 package com.senai.conta_bancaria.domain.entity;
-import com.senai.conta_bancaria.domain.entity.exceptions.SaldoInsuficienteException;
+import com.senai.conta_bancaria.domain.exceptions.SaldoInsuficienteException;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;

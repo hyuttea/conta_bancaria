@@ -1,5 +1,5 @@
 package com.senai.conta_bancaria.interface_ui.exception;
-import com.senai.conta_bancaria.domain.entity.exceptions.*;
+import com.senai.conta_bancaria.domain.exceptions.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.core.convert.ConversionFailedException;

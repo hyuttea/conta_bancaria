@@ -1,4 +1,4 @@
-package com.senai.conta_bancaria.domain.entity.exceptions;
+package com.senai.conta_bancaria.domain.exceptions;
 
 public class RendimentoInvalidoException extends RuntimeException {
     public RendimentoInvalidoException() {
