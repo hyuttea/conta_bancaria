@@ -10,20 +10,18 @@ import lombok.experimental.SuperBuilder;
 import java.math.BigDecimal;
 
 @Entity
-@DiscriminatorValue("CORRENTE")
+@DiscriminatorValue("CORRENTE") //Valor que identifica a classe
 @Data
-@EqualsAndHashCode(callSuper = true)
-@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true) //Gera equals e hashcode considerando a superclasse
 @SuperBuilder
-public class ContaCorrente extends Conta {
-    @Column(precision = 19, scale = 2)
+public class ContaCorrente extends Conta{
+    @Column(nullable = false, precision = 19, scale = 2)
     private BigDecimal limite;
-
-    @Column(precision = 19, scale = 4)
+    @Column(nullable = false, precision = 19, scale = 4)
     private BigDecimal taxa;
 
     @Override
-    public String getTipo() {
+    public String getTipoConta() {
         return "CORRENTE";
     }
 
@@ -31,13 +29,14 @@ public class ContaCorrente extends Conta {
     public void sacar(BigDecimal valor) {
         validarValorMaiorQueZero(valor, "saque");
 
-        BigDecimal custoSaque = valor.multiply(taxa);
+        BigDecimal custoSaque = valor.multiply(this.taxa);
         BigDecimal totalSaque = valor.add(custoSaque);
 
+        // Aqui, permitimos que o saldo fique negativo até o limite definido
         if (this.getSaldo().add(this.limite).compareTo(totalSaque) < 0) {
             throw new SaldoInsuficienteException();
         }
 
-        this.setSaldo(this.getSaldo().subtract(totalSaque));
+        this.setSaldo(this.getSaldo().subtract(valor));
     }
 }

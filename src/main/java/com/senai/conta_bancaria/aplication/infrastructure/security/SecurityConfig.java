@@ -1,9 +1,16 @@
-package com.senai.conta_bancaria.aplication.infrastructure.security;
-
+import com.senai.conta_bancaria.aplication.infrastructure.security.UsuarioDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @RequiredArgsConstructor
@@ -18,12 +25,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**","/swagger-ui/**","/v3/api-docs/**").permitAll()
 
-                        .requestMatchers(HttpMethod.POST, "/api/cliente/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/cliente/**").hasAnyRole("ADMIN","CLIENTE")
-
-                        .requestMatchers(HttpMethod.PUT, "/api/conta/**").hasRole("CLIENTE")
-                        .requestMatchers(HttpMethod.GET, "/api/conta/**").hasAnyRole("CLIENTE")
-                        .requestMatchers(HttpMethod.DELETE, "/api/conta/**").hasAnyRole("CLIENTE")
+                        .requestMatchers(HttpMethod.POST, "/professores").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/professores").hasAnyRole("ADMIN","PROFESSOR")
 
                         .anyRequest().authenticated()
                 )

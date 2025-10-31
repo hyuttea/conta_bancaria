@@ -8,22 +8,21 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import java.math.BigDecimal;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
-@DiscriminatorValue("POUPANCA")
 @Data
 @SuperBuilder
-@NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class ContaPoupanca extends Conta{
+@DiscriminatorValue("POUPANCA") //Valor que identifica a classe
+//@NoArgsConstructor
 
-    @Column(precision=10, scale=2)
+public class ContaPoupanca extends Conta {
+    @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal rendimento;
 
     @Override
-    public String getTipo() {
+    public String getTipoConta() {
         return "POUPANCA";
     }
-
 
     public void aplicarRendimento() {
         var ganho = getSaldo().multiply(rendimento);

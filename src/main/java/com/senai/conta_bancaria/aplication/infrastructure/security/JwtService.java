@@ -1,6 +1,7 @@
-package com.senai.conta_bancaria.aplication.infrastructure.security;
-
-import lombok.Value;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -9,7 +10,6 @@ import java.util.Date;
 
 @Service
 public class JwtService {
-
     private final Key key;
     private final long expirationSeconds;
 

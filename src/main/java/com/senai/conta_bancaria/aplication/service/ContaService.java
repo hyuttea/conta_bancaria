@@ -1,5 +1,6 @@
 package com.senai.conta_bancaria.aplication.service;
 import com.senai.conta_bancaria.aplication.dto.ContaAtualizacaoDTO;
+import com.senai.conta_bancaria.aplication.dto.ContaAutualizacaoDTO;
 import com.senai.conta_bancaria.aplication.dto.ContaResumoDTO;
 import com.senai.conta_bancaria.aplication.dto.TransferenciaDTO;
 import com.senai.conta_bancaria.aplication.dto.ValorSaqueDepositoDTO;
@@ -12,68 +13,76 @@ import com.senai.conta_bancaria.domain.repository.ContaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
 import java.util.List;
 
+//Service so faz chamada de metodo
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class ContaService {
+
     private final ContaRepository repository;
 
     @Transactional(readOnly = true)
     public List<ContaResumoDTO> listarTodasContas() {
-        return repository.findAllByAtivaTrue().stream()
-                .map(ContaResumoDTO::fromEntity).toList();
+        return repository.findAllByAtivoTrue().stream()
+                .map(ContaResumoDTO::fromEntity)
+                .toList();
     }
 
     @Transactional(readOnly = true)
     public ContaResumoDTO buscarContaPorNumero(String numero) {
         return ContaResumoDTO.fromEntity(
-                repository.findByNumeroAndAtivaTrue(numero)
+                repository.findByNumeroAndAtivoTrue(numero)
                         .orElseThrow(() -> new EntidadeNaoEncontradaException("Conta"))
         );
     }
 
-    public ContaResumoDTO atualizarConta(String numeroConta, ContaAtualizacaoDTO dto) {
-        var conta = buscaContaAtivaPorNumero(numeroConta);
+    public ContaResumoDTO atualizarConta(String numeroDaConta, ContaAutualizacaoDTO dto) {
+        var conta = buscaContaAtivaPorNumero(numeroDaConta);
 
-        if(conta instanceof ContaPoupanca poupanca){
+        if (conta instanceof ContaPoupanca poupanca){
             poupanca.setRendimento(dto.rendimento());
         } else if (conta instanceof ContaCorrente corrente) {
             corrente.setLimite(dto.limite());
             corrente.setTaxa(dto.taxa());
         }
         conta.setSaldo(dto.saldo());
+
         return ContaResumoDTO.fromEntity(repository.save(conta));
     }
+
     public void deletarConta(String numeroDaConta) {
         var conta = buscaContaAtivaPorNumero(numeroDaConta);
-        conta.setAtiva(false);
+        conta.setAtivo(false);
         repository.save(conta);
     }
+
+    //Metodo para evitar repetição de código = clean code
     private Conta buscaContaAtivaPorNumero(String numeroDaConta) {
-        return repository.findByNumeroAndAtivaTrue(numeroDaConta).orElseThrow(
-                () -> new EntidadeNaoEncontradaException("Conta")
-        );
+        var conta = repository.findByNumeroAndAtivoTrue(numeroDaConta)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Conta"));
+        return conta;
     }
 
-    public ContaResumoDTO sacar(String numeroConta, ValorSaqueDepositoDTO dto) {
-        var conta = buscaContaAtivaPorNumero(numeroConta);
-        conta.sacar(dto.valor());
-        return ContaResumoDTO.fromEntity(repository.save(conta));
-    }
-    public ContaResumoDTO depositar(String numeroConta, ValorSaqueDepositoDTO dto) {
-        var conta = buscaContaAtivaPorNumero(numeroConta);
-        conta.depositar(dto.valor());
+    public ContaResumoDTO sacar(String numeroDaConta, BigDecimal valor) {
+        var conta = buscaContaAtivaPorNumero(numeroDaConta);
+        conta.sacar(valor);
         return ContaResumoDTO.fromEntity(repository.save(conta));
     }
 
-    public ContaResumoDTO transferir(String numeroConta, TransferenciaDTO dto) {
-        var contaOrigem = buscaContaAtivaPorNumero(numeroConta);
+    public ContaResumoDTO depositar(String numeroDaConta, BigDecimal dto) {
+        var conta = buscaContaAtivaPorNumero(numeroDaConta);
+        conta.depositar(dto);
+        return ContaResumoDTO.fromEntity(repository.save(conta));
+    }
+
+    public ContaResumoDTO transferir(String numeroDaConta, TransferenciaDTO dto) {
+        var contaOrigem = buscaContaAtivaPorNumero(numeroDaConta);
         var contaDestino = buscaContaAtivaPorNumero(dto.contaDestino());
-
         contaOrigem.transferir(dto.valor(), contaDestino);
-
         repository.save(contaDestino);
         return ContaResumoDTO.fromEntity(repository.save(contaOrigem));
     }

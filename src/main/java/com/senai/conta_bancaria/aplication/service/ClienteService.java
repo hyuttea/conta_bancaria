@@ -1,6 +1,7 @@
 package com.senai.conta_bancaria.aplication.service;
 import com.senai.conta_bancaria.aplication.dto.ClienteRegistroDTO;
 import com.senai.conta_bancaria.aplication.dto.ClienteResponseDTO;
+import com.senai.conta_bancaria.domain.entity.Cliente;
 import com.senai.conta_bancaria.domain.exceptions.ContaMesmoTipoException;
 import com.senai.conta_bancaria.domain.exceptions.EntidadeNaoEncontradaException;
 import com.senai.conta_bancaria.domain.repository.ClienteRepository;
@@ -8,13 +9,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
+//Isso que é um bean de serviço
+//Responsável pela lógica de negócio
 @Service
 @RequiredArgsConstructor
 public class ClienteService {
 
     private final ClienteRepository repository;
 
-    public ClienteResponseDTO registarClienteOuAnexarConta(ClienteRegistroDTO dto) {
+    public ClienteResponseDTO registarClienteOuAnexarConta(ClienteCadastroDTO dto) {
 
         var cliente = repository.findByCpfAndAtivoTrue(dto.cpf()).orElseGet(
                 () -> repository.save(dto.toEntity())
@@ -24,7 +27,7 @@ public class ClienteService {
         var novaConta = dto.contaDTO().toEntity(cliente);
 
         boolean jaTemTipo = contas.stream()
-                .anyMatch(c -> c.getClass().equals(novaConta.getClass()) && c.isAtiva());
+                .anyMatch(c -> c.getClass().equals(novaConta.getClass()) && c.isAtivo());
 
         if(jaTemTipo)
             throw new ContaMesmoTipoException();
@@ -42,31 +45,31 @@ public class ClienteService {
     }
 
     public ClienteResponseDTO buscarClienteAtivoPorCpf(String cpf) {
-        var cliente = repository.findByCpfAndAtivoTrue(cpf).orElseThrow(
-                () -> new EntidadeNaoEncontradaException("Conta")
-        );
+        var cliente = buscarPorCpfClienteAtivo(cpf);
         return ClienteResponseDTO.fromEntity(cliente);
     }
 
-    public ClienteResponseDTO atualizarCliente(String cpf, ClienteRegistroDTO dto) {
-        var cliente = repository.findByCpfAndAtivoTrue(cpf).orElseThrow(
-                () -> new RuntimeException("Cliente não encontrado.")
-        );
+    public ClienteResponseDTO atualizarCliente(String cpf, ClienteCadastroDTO dto) {
+        var cliente = buscarPorCpfClienteAtivo(cpf);
 
-        cliente.setNome(dto.nome());
+        cliente.setNomeCompleto(dto.nomeCompleto());
         cliente.setCpf(dto.cpf());
 
         return ClienteResponseDTO.fromEntity(repository.save(cliente));
     }
 
     public void deletarCliente(String cpf) {
-        var cliente = repository.findByCpfAndAtivoTrue(cpf).orElseThrow(
-                () -> new EntidadeNaoEncontradaException("Conta")
-        );
+        var cliente = buscarPorCpfClienteAtivo(cpf);
+
         cliente.setAtivo(false);
-        cliente.getContas().forEach(
-                conta -> conta.setAtiva(false)
-        );
+        cliente.getContas().forEach(c -> c.setAtivo(false));
+
         repository.save(cliente);
+    }
+
+    private Cliente buscarPorCpfClienteAtivo(String cpf) {
+        var cliente = repository.findByCpfAndAtivoTrue(cpf)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Cliente")); //Só deleta caso o cliente pedir, caso contrário ele constinua inativo
+        return cliente;
     }
 }

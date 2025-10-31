@@ -1,45 +1,50 @@
 package com.senai.conta_bancaria.interface_ui.controller;
+
 import com.senai.conta_bancaria.aplication.dto.ClienteRegistroDTO;
 import com.senai.conta_bancaria.aplication.dto.ClienteResponseDTO;
 import com.senai.conta_bancaria.aplication.service.ClienteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/cliente")
-@RequiredArgsConstructor
+@RestController //Cuida das requisições HTTP. Avisa que a classe é um controlador
+@RequestMapping("/api/clientes") //Mapeia a rota
+@RequiredArgsConstructor     //Gera um construtor com 1 parâmetro para cada campo final
+@Transactional
+
 public class ClienteController {
 
     private final ClienteService service;
 
-
     @PostMapping
     public ResponseEntity<ClienteResponseDTO> registrarCliente(@RequestBody ClienteRegistroDTO dto) {
         ClienteResponseDTO novoCliente = service.registarClienteOuAnexarConta(dto);
+
         return ResponseEntity.created(
-                URI.create("/api/cliente/cpf/"+novoCliente.cpf())
+                URI.create("api/cliente/cpf" + novoCliente.cpf())
         ).body(novoCliente);
     }
 
     @GetMapping
-    public ResponseEntity<List<ClienteResponseDTO>> listarClientesAtivos() {
+    public ResponseEntity <List<ClienteResponseDTO>> listarClientesAtivos(){
+
         return ResponseEntity.ok(service.listarClientesAtivos());
     }
 
     @GetMapping("/cpf/{cpf}")
-    public ResponseEntity<ClienteResponseDTO> buscarClienteAtivoPorCpf(@PathVariable String cpf) {
+    public ResponseEntity<ClienteResponseDTO> buscarClienteAtivoPorCpf(@PathVariable String cpf){ //Caminho que será passado na URL (endpoint)
         return ResponseEntity.ok(service.buscarClienteAtivoPorCpf(cpf));
     }
 
     @PutMapping("/cpf/{cpf}")
-    public ResponseEntity<ClienteResponseDTO> atualizarCliente(@PathVariable String cpf,
-                                                               @RequestBody ClienteRegistroDTO dto) {
+    public ResponseEntity<ClienteResponseDTO> atualizarCliente(@PathVariable String cpf, @RequestBody ClienteRegistroDTO dto){
         return ResponseEntity.ok(service.atualizarCliente(cpf, dto));
     }
+
     @DeleteMapping("/cpf/{cpf}")
     public ResponseEntity<Void> deletarCliente(@PathVariable String cpf) {
         service.deletarCliente(cpf);

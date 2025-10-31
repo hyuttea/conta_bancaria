@@ -1,13 +1,17 @@
-package com.senai.conta_bancaria.aplication.infrastructure.security;
-
+import com.senai.conta_bancaria.domain.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class UsuarioDetailsService implements UserDetailsService {
-
     private final UsuarioRepository repository;
 
     @Override

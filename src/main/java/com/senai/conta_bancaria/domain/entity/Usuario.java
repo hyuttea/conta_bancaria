@@ -16,19 +16,19 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Inheritance(strategy = InheritanceType.JOINED) // estratégia JOINED
+@Inheritance(strategy = InheritanceType.JOINED) //banco de dados
 public abstract class Usuario {
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     protected String id;
 
     @NotBlank
     @Column(nullable = false)
-    protected String nome;
+    protected String nomeCompleto;
 
+    @NotBlank
     @Column(nullable = false, unique = true, length = 14)
-    protected String cpf; // formato "000.000.000-00" (validação pode ser ampliada)
+    protected String cpf;
 
     @Email
     @NotBlank
