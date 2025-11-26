@@ -1,4 +1,4 @@
 package com.senai.conta_bancaria.domain.entity;
 
-public class Pagamento {
+public class CodigoAutenticacaoEntity {
 }

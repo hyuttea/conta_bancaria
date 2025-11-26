@@ -1,12 +1,15 @@
 package com.senai.conta_bancaria.aplication.service;
-import com.senai.conta_bancaria.aplication.dto.ClienteRegistroDTO;
+
+
+import com.senai.conta_bancaria.aplication.dto.ClienteCadastroDTO;
 import com.senai.conta_bancaria.aplication.dto.ClienteResponseDTO;
-import com.senai.conta_bancaria.domain.entity.Cliente;
+import com.senai.conta_bancaria.domain.entity.ClienteEntity;
 import com.senai.conta_bancaria.domain.exceptions.ContaMesmoTipoException;
 import com.senai.conta_bancaria.domain.exceptions.EntidadeNaoEncontradaException;
 import com.senai.conta_bancaria.domain.repository.ClienteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 //Isso que é um bean de serviço
@@ -67,7 +70,7 @@ public class ClienteService {
         repository.save(cliente);
     }
 
-    private Cliente buscarPorCpfClienteAtivo(String cpf) {
+    private ClienteEntity buscarPorCpfClienteAtivo(String cpf) {
         var cliente = repository.findByCpfAndAtivoTrue(cpf)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Cliente")); //Só deleta caso o cliente pedir, caso contrário ele constinua inativo
         return cliente;

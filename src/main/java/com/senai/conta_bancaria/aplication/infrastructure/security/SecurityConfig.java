@@ -1,4 +1,5 @@
-import com.senai.conta_bancaria.aplication.infrastructure.security.UsuarioDetailsService;
+package com.senai.conta_bancaria.aplication.infrastructure.security;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.*;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -25,8 +26,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**","/swagger-ui/**","/v3/api-docs/**").permitAll()
 
-                        .requestMatchers(HttpMethod.POST, "/professores").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/professores").hasAnyRole("ADMIN","PROFESSOR")
+                        .requestMatchers(HttpMethod.POST, "/taxa").hasRole("GERENTE")
+                        .requestMatchers(HttpMethod.GET, "/pagamentos").hasAnyRole("cliente")
+
 
                         .anyRequest().authenticated()
                 )

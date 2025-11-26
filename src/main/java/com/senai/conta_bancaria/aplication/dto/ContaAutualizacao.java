@@ -1,11 +1,12 @@
 package com.senai.conta_bancaria.aplication.dto;
+
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 
-public record ContaAutualizacaoDTO(
+public record ContaAutualizacao(
 
         @NotNull(message = "O saldo não pode ser negativo e/ou ficar em branco")
         @DecimalMin(value = "0.0", inclusive = true)
@@ -22,4 +23,4 @@ public record ContaAutualizacaoDTO(
         BigDecimal taxa
 ) {
 
-}
+    }

@@ -1,18 +1,18 @@
 package com.senai.conta_bancaria.aplication.service;
-import com.senai.conta_bancaria.aplication.dto.ContaAtualizacaoDTO;
-import com.senai.conta_bancaria.aplication.dto.ContaAutualizacaoDTO;
+
+import com.senai.conta_bancaria.aplication.dto.ContaAutualizacao;
 import com.senai.conta_bancaria.aplication.dto.ContaResumoDTO;
 import com.senai.conta_bancaria.aplication.dto.TransferenciaDTO;
-import com.senai.conta_bancaria.aplication.dto.ValorSaqueDepositoDTO;
-import com.senai.conta_bancaria.domain.entity.Conta;
-import com.senai.conta_bancaria.domain.entity.ContaCorrente;
-import com.senai.conta_bancaria.domain.entity.ContaPoupanca;
+import com.senai.conta_bancaria.domain.entity.ContaCorrenteEntity;
+import com.senai.conta_bancaria.domain.entity.ContaEntity;
+import com.senai.conta_bancaria.domain.entity.ContaPoupancaEntity;
 import com.senai.conta_bancaria.domain.exceptions.EntidadeNaoEncontradaException;
 import com.senai.conta_bancaria.domain.exceptions.RendimentoInvalidoException;
 import com.senai.conta_bancaria.domain.repository.ContaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -40,12 +40,12 @@ public class ContaService {
         );
     }
 
-    public ContaResumoDTO atualizarConta(String numeroDaConta, ContaAutualizacaoDTO dto) {
+    public ContaResumoDTO atualizarConta(String numeroDaConta, ContaAutualizacao dto) {
         var conta = buscaContaAtivaPorNumero(numeroDaConta);
 
-        if (conta instanceof ContaPoupanca poupanca){
+        if (conta instanceof ContaPoupancaEntity poupanca){
             poupanca.setRendimento(dto.rendimento());
-        } else if (conta instanceof ContaCorrente corrente) {
+        } else if (conta instanceof ContaCorrenteEntity corrente) {
             corrente.setLimite(dto.limite());
             corrente.setTaxa(dto.taxa());
         }
@@ -61,7 +61,7 @@ public class ContaService {
     }
 
     //Metodo para evitar repetição de código = clean code
-    private Conta buscaContaAtivaPorNumero(String numeroDaConta) {
+    private ContaEntity buscaContaAtivaPorNumero(String numeroDaConta) {
         var conta = repository.findByNumeroAndAtivoTrue(numeroDaConta)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Conta"));
         return conta;
@@ -89,7 +89,7 @@ public class ContaService {
 
     public ContaResumoDTO aplicarRendimento(String numeroDaConta) {
         var conta = buscaContaAtivaPorNumero(numeroDaConta);
-        if(conta instanceof ContaPoupanca poupanca){
+        if(conta instanceof ContaPoupancaEntity poupanca){
             poupanca.aplicarRendimento();
             return ContaResumoDTO.fromEntity(repository.save(conta));
         }

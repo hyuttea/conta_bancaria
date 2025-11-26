@@ -1,5 +1,9 @@
 package com.senai.conta_bancaria.aplication.dto;
-import com.senai.conta_bancaria.domain.entity.*;
+
+import com.senai.conta_bancaria.domain.entity.ClienteEntity;
+import com.senai.conta_bancaria.domain.entity.ContaCorrenteEntity;
+import com.senai.conta_bancaria.domain.entity.ContaEntity;
+import com.senai.conta_bancaria.domain.entity.ContaPoupancaEntity;
 import com.senai.conta_bancaria.domain.exceptions.TipoDeContaInvalidaException;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.*;
@@ -8,7 +12,7 @@ import java.math.BigDecimal;
 
 public record ContaResumoDTO(
         @NotNull(message = "Este espaço é obrigatório")
-        @Size(min = 8, max = 12, message = "O numero da conta, deve possuir entre 8 e 12 números.")
+        @Size (min = 8, max = 12, message = "O numero da conta, deve possuir entre 8 e 12 números.")
         @Pattern(regexp = "\\d+", message = "O número da conta deve conter apenas dígitos numéricos.")
         @Column(nullable = false, length = 12, unique = true)
         String numeroConta,
@@ -21,9 +25,9 @@ public record ContaResumoDTO(
         @Column(nullable = false)
         BigDecimal saldo
 ) {
-    public Conta toEntity(Cliente cliente) {
+    public ContaEntity toEntity(ClienteEntity cliente) {
         if ("CORRENTE".equalsIgnoreCase(tipoConta)) {
-            return ContaCorrente.builder()
+            return ContaCorrenteEntity.builder()
                     .numero(this.numeroConta)
                     .saldo(this.saldo)
                     .ativo(true)
@@ -33,7 +37,7 @@ public record ContaResumoDTO(
                     .build();
 
         } else if ("POUPANCA".equalsIgnoreCase(tipoConta)) {
-            return ContaPoupanca.builder()
+            return ContaPoupancaEntity.builder()
                     .numero(this.numeroConta)
                     .saldo(this.saldo)
                     .ativo(true)
@@ -44,7 +48,7 @@ public record ContaResumoDTO(
         throw new TipoDeContaInvalidaException();
     }
 
-    public static ContaResumoDTO fromEntity(Conta c) {
+    public static ContaResumoDTO fromEntity(ContaEntity c) {
         return new ContaResumoDTO(
                 c.getNumero(),
                 c.getTipoConta(),

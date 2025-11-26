@@ -1,15 +1,16 @@
 package com.senai.conta_bancaria.domain.repository;
 
-import com.senai.conta_bancaria.domain.entity.Cliente;
+
+import com.senai.conta_bancaria.domain.entity.ClienteEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+//JPA consegue interpretar pelo nomeCompleto do metodo e fazer um pedido no SQL
+public interface ClienteRepository extends JpaRepository<ClienteEntity, String> {
 
-public interface ClienteRepository extends JpaRepository<Cliente,String> {
-    Optional<Cliente> findByCpfAndAtivoTrue(String cpf);
+   Optional <ClienteEntity> findByCpfAndAtivoTrue(String cpf); // Método para encontrar um cliente pelo CPF dentro do BD
 
-    List<Cliente> findAllByAtivoTrue();
+   List <ClienteEntity> findAllByAtivoTrue();
 }

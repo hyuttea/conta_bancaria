@@ -1,5 +1,8 @@
 package com.senai.conta_bancaria.aplication.dto;
 
+
+import com.senai.conta_bancaria.domain.entity.ServicoEntity;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -15,7 +18,7 @@ public record ServicoDTO(
         @DecimalMin(value = "0.0", inclusive = false, message = "saldo deve ser positivo")
         Double saldo
 ) {
-    public static ServicoDTO fromEntity(Servico s) {
+    public static ServicoDTO fromEntity(ServicoEntity s) {
         return new ServicoDTO(
                 s.getId(),
                 s.getTipoConta(),
@@ -23,11 +26,12 @@ public record ServicoDTO(
         );
     }
 
-    public Servico toEntity() {
-        return Servico.builder()
+    public ServicoEntity toEntity() {
+        return ServicoEntity.builder()
                 .id(id)
                 .tipoConta(tipoConta)
                 .saldo(saldo)
                 .build();
     }
 }
+

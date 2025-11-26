@@ -1,5 +1,6 @@
 package com.senai.conta_bancaria.domain.entity;
 
+
 import com.senai.conta_bancaria.domain.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;

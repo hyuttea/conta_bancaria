@@ -1,6 +1,6 @@
 package com.senai.conta_bancaria.aplication.dto;
 
-import com.senai.conta_bancaria.domain.entity.Gerente;
+import com.senai.conta_bancaria.domain.entity.GerenteEnity;
 import com.senai.conta_bancaria.domain.enums.Role;
 import lombok.Builder;
 
@@ -15,7 +15,7 @@ public record GerenteDTO(
         Role role
 ) {
 
-    public static GerenteDTO fromEntity(Gerente gerente) {
+    public static GerenteDTO fromEntity(GerenteEnity gerente) {
         return GerenteDTO.builder()
                 .id(gerente.getId())
                 .nomeCompleto(gerente.getNomeCompleto())
@@ -26,8 +26,8 @@ public record GerenteDTO(
                 .build();
     }
 
-    public Gerente toEntity() {
-        return Gerente.builder()
+    public GerenteEnity toEntity() {
+        return GerenteEnity.builder()
                 .id(this.id)
                 .nomeCompleto(this.nomeCompleto)
                 .cpf(this.cpf)

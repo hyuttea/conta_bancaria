@@ -2,6 +2,6 @@ package com.senai.conta_bancaria.domain.exceptions;
 
 public class TipoDeContaInvalidaException extends RuntimeException {
     public TipoDeContaInvalidaException() {
-        super("Tipo de conta inválido. Deve ser 'CORRENTE' ou 'POUPANÇA'.");
+        super("Tipo de conta inválida. Os tipos válidos são: 'Corrente' e 'Poupança'.");
     }
 }

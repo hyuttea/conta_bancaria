@@ -1,10 +1,11 @@
 package com.senai.conta_bancaria.domain.entity;
+
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ import java.util.List;
         uniqueConstraints = @UniqueConstraint(name = "uk_cliente_cpf", columnNames = "cpf") //Chave unica impedindo nomes iuais
 
 )
-public class Cliente extends Usuario {
+public class ClienteEntity extends Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -32,7 +33,7 @@ public class Cliente extends Usuario {
     private String cpf;
 
     @OneToMany (mappedBy = "cliente", cascade = CascadeType.ALL) //Relacionamento com banco de dados.
-    private List <Conta> contas;
+    private List <ContaEntity> contas;
 
     @Column(nullable = false)
     private boolean ativo;

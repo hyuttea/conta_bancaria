@@ -1,7 +1,12 @@
 package com.senai.conta_bancaria.aplication.service;
 
+
 import com.senai.conta_bancaria.aplication.dto.ServicoDTO;
+import com.senai.conta_bancaria.domain.entity.ServicoEntity;
 import com.senai.conta_bancaria.domain.exceptions.EntidadeNaoEncontradaException;
+import com.senai.conta_bancaria.domain.repository.ServicoRepository;
+import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class ServicoAppService {
@@ -13,7 +18,7 @@ public class ServicoAppService {
     }
 
     public ServicoDTO salvar(ServicoDTO dto) {
-        Servico servico = dto.toEntity();
+        ServicoEntity servico = dto.toEntity();
         servico.validar();
         return ServicoDTO.fromEntity(repository.save(servico));
     }
@@ -33,10 +38,10 @@ public class ServicoAppService {
     }
 
     public ServicoDTO atualizar(Long id, ServicoDTO dtoAtualizado) {
-        Servico existente = repository.findById(id)
+        ServicoEntity existente = repository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Serviço com ID " + id + " não encontrado."));
 
-        Servico atualizado = dtoAtualizado.toEntity();
+        ServicoEntity atualizado = dtoAtualizado.toEntity();
         atualizado.setId(existente.getId());
 
         atualizado.validar();
@@ -51,3 +56,4 @@ public class ServicoAppService {
     }
 
 }
+

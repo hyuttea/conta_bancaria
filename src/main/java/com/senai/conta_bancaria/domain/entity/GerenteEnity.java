@@ -15,8 +15,8 @@ import java.util.List;
 @AllArgsConstructor
 @SuperBuilder
 @Entity
-@Table(name="gerentes")
-public class Gerente extends Usuario {
+@Table(name="GERENTE")
+public class GerenteEnity extends Usuario {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name="gerentes_clientes", joinColumns=@JoinColumn(name="gerentes_id"))
@@ -28,4 +28,3 @@ public class Gerente extends Usuario {
     @Column(name="bancos")
     private List<String> listaDeBancos;
 }
-

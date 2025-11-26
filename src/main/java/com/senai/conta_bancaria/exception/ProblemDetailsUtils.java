@@ -1,12 +1,12 @@
-package com.senai.conta_bancaria.interface_ui.exception;
-
+package com.senai.conta_bancaria.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
+
 import java.net.URI;
 import java.time.LocalDateTime;
 
-public class ProblemDetailUtils {
+public class ProblemDetailsUtils {
 
     public static ProblemDetail buildProblem(
             HttpStatus status,

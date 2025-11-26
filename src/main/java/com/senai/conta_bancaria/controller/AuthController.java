@@ -1,4 +1,4 @@
-package com.senai.conta_bancaria.interface_ui.controller;
+package com.senai.conta_bancaria.controller;
 
 import com.senai.conta_bancaria.aplication.dto.AuthDTO;
 import com.senai.conta_bancaria.aplication.service.AuthService;

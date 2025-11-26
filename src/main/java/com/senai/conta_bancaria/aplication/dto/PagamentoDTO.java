@@ -1,4 +1,68 @@
 package com.senai.conta_bancaria.aplication.dto;
 
-public class PagamentoDTO {
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.senai.conta_bancaria.domain.entity.ContaEntity;
+import com.senai.conta_bancaria.domain.entity.PagamentoEntity;
+import com.senai.conta_bancaria.domain.entity.TaxaEntity;
+import com.senai.conta_bancaria.domain.enums.StatusPagamento;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import lombok.Builder;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Schema(
+        name = "PagamentoDTO",
+        description = "DTO para transportar informações de Taxas"
+)
+
+@Builder
+public record PagamentoDTO(
+            String id,
+
+            @NotNull
+            ContaEntity conta,
+
+            @NotBlank
+            String boleto,
+
+            @NotNull
+            @Positive
+            BigDecimal valorPago,
+
+            @NotNull
+            @JsonFormat(pattern = "dd-mm-yyyy'T'HH:mm:ss", timezone = "America/Sao_Paulo")
+            LocalDateTime data,
+
+            @NotNull
+            StatusPagamento statusPagamento,
+
+            List<TaxaEntity> taxas
+) {
+
+    public PagamentoDTO fromEntity(PagamentoEntity pagamento) {
+        return new PagamentoDTO(
+                id,
+                conta,
+                pagamento.getBoleto(),
+                pagamento.getValorPago(),
+                pagamento.getData(),
+                pagamento.getStatusPagamento(),
+                taxas
+        );
+    }
+
+    public PagamentoEntity toEntity(){
+        return PagamentoEntity.builder()
+                .conta(conta)
+                .boleto(boleto)
+                .valorPago(valorPago)
+                .data(data)
+                .statusPagamento(this.statusPagamento != null ? this.statusPagamento : StatusPagamento.PENDENTE)
+                .taxas(taxas)
+                .build();
+    }
 }
