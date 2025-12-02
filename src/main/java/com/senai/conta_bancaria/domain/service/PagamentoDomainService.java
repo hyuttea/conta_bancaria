@@ -5,6 +5,7 @@ import com.senai.conta_bancaria.aplication.dto.PagamentoDTO;
 import com.senai.conta_bancaria.domain.entity.ContaEntity;
 import com.senai.conta_bancaria.domain.entity.PagamentoEntity;
 import com.senai.conta_bancaria.domain.entity.TaxaEntity;
+import com.senai.conta_bancaria.domain.enums.StatusPagamento;
 import com.senai.conta_bancaria.domain.repository.ContaRepository;
 import com.senai.conta_bancaria.domain.repository.PagamentoRepository;
 import lombok.RequiredArgsConstructor;
