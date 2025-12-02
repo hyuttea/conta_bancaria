@@ -1,4 +1,4 @@
-package com.senai.conta_bancaria.exception;
+package com.senai.conta_bancaria.interface_ui.exception;
 
 
 import com.senai.conta_bancaria.domain.exceptions.*;
@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static com.senai.conta_bancaria.exception.ProblemDetailsUtils.buildProblem;
+import static com.senai.conta_bancaria.interface_ui.exception.ProblemDetailsUtils.buildProblem;
 
 
 @RestControllerAdvice
@@ -98,15 +98,15 @@ public class GlobalExceptionAdviceHandler {
         );
     }
 
-    @ExceptionHandler(Exception.class)
-    public ProblemDetail handleGenericException(Exception ex, HttpServletRequest request) {
-        return buildProblem(
-                HttpStatus.INTERNAL_SERVER_ERROR,
-                "Erro do própio servidor",
-                ex.getMessage(),
-                request.getRequestURI()
-        );
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ProblemDetail handleGenericException(Exception ex, HttpServletRequest request) {
+//        return buildProblem(
+//                HttpStatus.INTERNAL_SERVER_ERROR,
+//                "Erro do própio servidor",
+//                ex.getMessage(),
+//                request.getRequestURI()
+//        );
+//    }
 
     //Pega erros de digitação ou semelhantes
     @ExceptionHandler(MethodArgumentNotValidException.class)

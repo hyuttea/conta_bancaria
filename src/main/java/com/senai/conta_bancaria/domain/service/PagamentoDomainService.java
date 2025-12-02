@@ -75,7 +75,3 @@ public class PagamentoDomainService {
         return total;
     }
 }
-
-
-
-//fará aplicação da Taxa, as suas regras de negócio

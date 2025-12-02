@@ -1,4 +1,4 @@
-package com.senai.conta_bancaria.aplication.infrastructure.security;
+package com.senai.conta_bancaria.infrastructure.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
