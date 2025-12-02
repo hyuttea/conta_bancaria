@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
 @Data //Ela não gera construtores
 @AllArgsConstructor //Gera os construtores
 @NoArgsConstructor //Gera construtores sem argumentos
-@Builder //?
+@SuperBuilder
 //Modela banco de dados
 @Table (
         name = "cliente",

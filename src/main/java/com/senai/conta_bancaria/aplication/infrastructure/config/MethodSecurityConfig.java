@@ -1,4 +1,4 @@
-package com.senai.conta_bancaria.infrastructure.config;
+package com.senai.conta_bancaria.aplication.infrastructure.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;

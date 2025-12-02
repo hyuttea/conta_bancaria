@@ -1,4 +1,4 @@
-package com.senai.conta_bancaria.infrastructure.config;
+package com.senai.conta_bancaria.aplication.infrastructure.config;
 
 
 import com.senai.conta_bancaria.domain.entity.GerenteEnity;

@@ -7,6 +7,7 @@ import com.senai.conta_bancaria.domain.entity.ContaEntity;
 import jakarta.persistence.Column;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
@@ -23,7 +24,15 @@ public record ClienteCadastroDTO(
         String cpf,
 
         @Valid
-        ContaResumoDTO contaDTO
+        ContaResumoDTO contaDTO,
+
+        @NotBlank
+        @NotNull
+        String email,
+
+        @NotBlank
+        @NotNull
+        String senha
 ) {
 
     public ClienteEntity toEntity() {
@@ -32,6 +41,8 @@ public record ClienteCadastroDTO(
                 .nomeCompleto(this.nomeCompleto)
                 .cpf(this.cpf)
                 .contas(new ArrayList<ContaEntity>())
+                .email(this.email)
+                .senha(this.senha)
                 .build();
     }
 

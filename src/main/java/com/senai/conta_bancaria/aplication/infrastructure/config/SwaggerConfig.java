@@ -1,4 +1,4 @@
-package com.senai.conta_bancaria.infrastructure.config;
+package com.senai.conta_bancaria.aplication.infrastructure.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
