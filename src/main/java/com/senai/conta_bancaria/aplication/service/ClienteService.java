@@ -7,6 +7,7 @@ import com.senai.conta_bancaria.domain.entity.ClienteEntity;
 import com.senai.conta_bancaria.domain.exceptions.ContaMesmoTipoException;
 import com.senai.conta_bancaria.domain.exceptions.EntidadeNaoEncontradaException;
 import com.senai.conta_bancaria.domain.repository.ClienteRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.util.List;
 //Responsável pela lógica de negócio
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ClienteService {
 
     private final ClienteRepository repository;
@@ -25,6 +27,8 @@ public class ClienteService {
         var cliente = repository.findByCpfAndAtivoTrue(dto.cpf()).orElseGet(
                 () -> repository.save(dto.toEntity())
         );
+
+        System.out.println(cliente);
 
         var contas = cliente.getContas();
         var novaConta = dto.contaDTO().toEntity(cliente);
@@ -37,8 +41,13 @@ public class ClienteService {
 
         cliente.getContas().add(novaConta);
 
+        System.out.println(cliente.getContas());
 
-        return ClienteResponseDTO.fromEntity(repository.save(cliente));
+        System.out.println(repository.save(cliente));
+
+        System.out.println(ClienteResponseDTO.fromEntity(cliente));
+
+        return ClienteResponseDTO.fromEntity(cliente);
     }
 
     public List<ClienteResponseDTO> listarClientesAtivos() {

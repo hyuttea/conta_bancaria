@@ -5,12 +5,14 @@ import com.senai.conta_bancaria.domain.exceptions.TransferenciaMesmaContaExcepti
 import com.senai.conta_bancaria.domain.exceptions.ValoresNegativosException;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 
 @Entity
 @Data
+@NoArgsConstructor
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE) //Ela é uma herança, que usamos quando haverá uma tabela. Parrecido com a MappedSuperClass
 @DiscriminatorColumn(name = "tipo_conta", discriminatorType = DiscriminatorType.STRING, length = 20) //Discrimina o tipo de classe que estu salvando
 @Table(
@@ -35,7 +37,7 @@ public abstract class ContaEntity {
     @Column(nullable = false)
     private boolean ativo;
 
-    @ManyToOne(fetch = FetchType.LAZY) // Busca preguiçosa, quando achar tal coisa at
+    @ManyToOne(fetch = FetchType.LAZY) // Busca preguiçosa
     @JoinColumn (
             name = "cliente_id",
             foreignKey = @ForeignKey(name = "fk_conta_cliente")

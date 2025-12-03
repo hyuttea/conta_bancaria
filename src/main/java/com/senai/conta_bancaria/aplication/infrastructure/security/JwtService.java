@@ -32,6 +32,7 @@ public class JwtService {
                 .setExpiration(Date.from(now.plusSeconds(expirationSeconds)))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
+
     }
 
     public String extractEmail(String token) {
@@ -42,6 +43,7 @@ public class JwtService {
                 .getBody()
                 .getSubject();
     }
+
 
     public String extractRole(String token) {
         return (String) Jwts.parserBuilder()

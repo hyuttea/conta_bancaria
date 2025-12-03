@@ -4,8 +4,10 @@ import com.senai.conta_bancaria.domain.exceptions.SaldoInsuficienteException;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import java.math.BigDecimal;
 
@@ -14,6 +16,8 @@ import java.math.BigDecimal;
 @Data
 @EqualsAndHashCode(callSuper = true) //Gera equals e hashcode considerando a superclasse
 @SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ContaCorrenteEntity extends ContaEntity{
     @Column(nullable = false, precision = 19, scale = 2)
     private BigDecimal limite;

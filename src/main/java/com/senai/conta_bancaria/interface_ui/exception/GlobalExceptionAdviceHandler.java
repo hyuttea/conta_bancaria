@@ -98,15 +98,15 @@ public class GlobalExceptionAdviceHandler {
         );
     }
 
-    @ExceptionHandler(Exception.class)
-    public ProblemDetail handleGenericException(Exception ex, HttpServletRequest request) {
-        return buildProblem(
-                HttpStatus.INTERNAL_SERVER_ERROR,
-                "Erro do própio servidor",
-                ex.getMessage(),
-                request.getRequestURI()
-        );
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ProblemDetail handleGenericException(Exception ex, HttpServletRequest request) {
+//        return buildProblem(
+//                HttpStatus.INTERNAL_SERVER_ERROR,
+//                "Erro do própio servidor",
+//                ex.getMessage(),
+//                request.getRequestURI()
+//        );
+//    }
 
     //Pega erros de digitação ou semelhantes
     @ExceptionHandler(MethodArgumentNotValidException.class)

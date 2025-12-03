@@ -4,6 +4,7 @@ import com.senai.conta_bancaria.aplication.dto.ClienteCadastroDTO;
 import com.senai.conta_bancaria.aplication.dto.ClienteResponseDTO;
 import com.senai.conta_bancaria.aplication.service.ClienteService;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,18 +15,20 @@ import java.util.List;
 @RestController //Cuida das requisições HTTP. Avisa que a classe é um controlador
 @RequestMapping("/api/clientes") //Mapeia a rota
 @RequiredArgsConstructor     //Gera um construtor com 1 parâmetro para cada campo final
-@Transactional
-
 public class ClienteController {
 
     private final ClienteService service;
 
     @PostMapping
-    public ResponseEntity <ClienteResponseDTO> registrarCliente(@RequestBody ClienteCadastroDTO dto) {
+    public ResponseEntity <ClienteResponseDTO> registrarCliente(@RequestBody @Valid ClienteCadastroDTO dto) {
+
+        System.out.println(dto);
         ClienteResponseDTO novoCliente = service.registarClienteOuAnexarConta(dto);
 
+        System.out.println("teste"+novoCliente);
+
         return ResponseEntity.created(
-                URI.create("api/cliente/cpf" + novoCliente.cpf())
+                URI.create("api/cliente/cpf/" + novoCliente.cpf())
         ).body(novoCliente);
     }
 
