@@ -23,16 +23,6 @@ import java.util.List;
 )
 public class ClienteEntity extends Usuario {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
-
-    @Column(nullable = false, length = 80) //modela tabela
-    private String nomeCompleto;
-
-    @Column(nullable = false, length = 11)
-    private String cpf;
-
     @OneToMany (mappedBy = "cliente", cascade = CascadeType.ALL) //Relacionamento com banco de dados.
     private List <ContaEntity> contas;
 

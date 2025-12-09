@@ -4,6 +4,7 @@ package com.senai.conta_bancaria.aplication.service;
 import com.senai.conta_bancaria.aplication.dto.ClienteCadastroDTO;
 import com.senai.conta_bancaria.aplication.dto.ClienteResponseDTO;
 import com.senai.conta_bancaria.domain.entity.ClienteEntity;
+import com.senai.conta_bancaria.domain.enums.Role;
 import com.senai.conta_bancaria.domain.exceptions.ContaMesmoTipoException;
 import com.senai.conta_bancaria.domain.exceptions.EntidadeNaoEncontradaException;
 import com.senai.conta_bancaria.domain.repository.ClienteRepository;
@@ -47,7 +48,7 @@ public class ClienteService {
 
         System.out.println(ClienteResponseDTO.fromEntity(cliente));
 
-        return ClienteResponseDTO.fromEntity(cliente);
+        return ClienteResponseDTO.fromEntity(repository.save(cliente));
     }
 
     public List<ClienteResponseDTO> listarClientesAtivos() {

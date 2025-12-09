@@ -19,9 +19,9 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ContaCorrenteEntity extends ContaEntity{
-    @Column(nullable = false, precision = 19, scale = 2)
+    @Column(precision = 19, scale = 2)
     private BigDecimal limite;
-    @Column(nullable = false, precision = 19, scale = 4)
+    @Column(precision = 19, scale = 4)
     private BigDecimal taxa;
 
     @Override

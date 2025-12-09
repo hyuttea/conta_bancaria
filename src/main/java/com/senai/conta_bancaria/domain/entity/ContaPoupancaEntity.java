@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 //@NoArgsConstructor
 
 public class ContaPoupancaEntity extends ContaEntity {
-    @Column(nullable = false, precision = 10, scale = 2)
+    @Column(precision = 10, scale = 2)
     private BigDecimal rendimento;
 
     @Override

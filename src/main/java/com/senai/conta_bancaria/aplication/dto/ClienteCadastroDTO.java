@@ -4,6 +4,7 @@ package com.senai.conta_bancaria.aplication.dto;
 
 import com.senai.conta_bancaria.domain.entity.ClienteEntity;
 import com.senai.conta_bancaria.domain.entity.ContaEntity;
+import com.senai.conta_bancaria.domain.enums.Role;
 import jakarta.persistence.Column;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -19,6 +20,7 @@ public record ClienteCadastroDTO(
         @Column(nullable = false, length = 80)
         String nomeCompleto,
 
+        @NotBlank(message = "Este espaço não pode ficar em branco")
         @Pattern(regexp = "\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}", message = "O CPF deve estar no formato 000.000.000-00")
         @Column(nullable = false, unique = true, length = 14)
         String cpf,
@@ -43,6 +45,7 @@ public record ClienteCadastroDTO(
                 .contas(new ArrayList<ContaEntity>())
                 .email(this.email)
                 .senha(this.senha)
+                .role(Role.CLIENTE)
                 .build();
     }
 

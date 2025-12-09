@@ -22,7 +22,6 @@ import java.math.BigDecimal;
         }
 )
 @SuperBuilder //para heranças
-
 public abstract class ContaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

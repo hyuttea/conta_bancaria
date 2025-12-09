@@ -2,12 +2,6 @@ package com.senai.conta_bancaria.aplication.dto;
 
 
 import com.senai.conta_bancaria.domain.entity.ClienteEntity;
-import jakarta.persistence.Column;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import java.util.List;
 
 public record ClienteResponseDTO(
@@ -23,6 +17,7 @@ public record ClienteResponseDTO(
                 .toList();
 
         System.out.println("dto"+contas);
+        System.out.println("dto"+cliente.getCpf());
 
         return new ClienteResponseDTO(
                 cliente.getId(),
