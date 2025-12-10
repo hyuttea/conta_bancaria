@@ -10,7 +10,7 @@ import java.util.Optional;
 //JPA consegue interpretar pelo nomeCompleto do metodo e fazer um pedido no SQL
 public interface ClienteRepository extends JpaRepository<ClienteEntity, String> {
 
-   Optional <ClienteEntity> findByCpfAndAtivoTrue(String cpf); // Método para encontrar um cliente pelo CPF dentro do BD
+   Optional <ClienteEntity> findByCpf(String cpf); // Método para encontrar um cliente pelo CPF dentro do BD
 
-   List <ClienteEntity> findAllByAtivoTrue();
+   List <ClienteEntity> findAll();
 }

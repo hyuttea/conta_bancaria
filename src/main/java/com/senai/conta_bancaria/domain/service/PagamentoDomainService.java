@@ -22,14 +22,14 @@ public class PagamentoDomainService {
     private final ContaRepository contaRepository;
     private final PagamentoRepository pagamentoRepository;
 
-    public PagamentoEntity realizarPagamento(PagamentoDTO dto, List<TaxaEntity> taxas) {
+    public PagamentoEntity realizarPagamento(PagamentoDTO dto) {
 
         // 1 — Buscar conta
         ContaEntity conta = contaRepository.findById(dto.id())
                 .orElseThrow(() -> new RuntimeException("Conta não encontrada"));
 
         // 2 — Calcular total
-        BigDecimal totalTaxas = calcularTotalTaxa(conta.getSaldo(), taxas);
+        BigDecimal totalTaxas = calcularTotalTaxa(conta.getSaldo(), dto.taxas());
         BigDecimal totalDebitar = conta.getSaldo().add(totalTaxas);
 
         // 3 — Validar saldo
@@ -49,7 +49,7 @@ public class PagamentoDomainService {
         pagamento.setValorPago(totalDebitar);
         pagamento.setData(LocalDateTime.now());
         pagamento.setStatusPagamento(StatusPagamento.SUCESSO);
-        pagamento.setTaxas(taxas);
+        pagamento.setTaxas(dto.taxas());
 
         return pagamentoRepository.save(pagamento);
     }

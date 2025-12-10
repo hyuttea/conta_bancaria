@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/taxas")
+@RequestMapping("/api/taxa")
 @RequiredArgsConstructor
 @Controller
 public class TaxaController {
@@ -34,8 +34,8 @@ public class TaxaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TaxaDTO> atualizar(@RequestBody TaxaDTO dto, @PathVariable String id, @PathVariable BigDecimal valor){
-        return ResponseEntity.ok(service.atualizar(id, valor, dto));
+    public ResponseEntity<TaxaDTO> atualizar(@RequestBody TaxaDTO dto, @PathVariable String id){
+        return ResponseEntity.ok(service.atualizar(id, dto));
     }
 
     @DeleteMapping("/{id}")

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/pagamentos")
+@RequestMapping("/api/pagamentos")
 @RequiredArgsConstructor
 public class PagamentoController {
 
@@ -22,8 +22,8 @@ public class PagamentoController {
 
     // REALIZAR PAGAMENTO
     @PostMapping
-    public ResponseEntity<PagamentoEntity> realizarPagamento(@PathVariable PagamentoDTO dto, @RequestBody List<TaxaEntity> taxas) {
-        return ResponseEntity.ok(domainService.realizarPagamento(dto, taxas));
+    public ResponseEntity<PagamentoEntity> realizarPagamento(@RequestBody PagamentoDTO dto) {
+        return ResponseEntity.ok(domainService.realizarPagamento(dto));
     }
 
     // LISTAR TODOS OS PAGAMENTOS

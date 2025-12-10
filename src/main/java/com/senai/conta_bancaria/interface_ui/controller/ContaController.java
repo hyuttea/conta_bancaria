@@ -24,34 +24,34 @@ public class ContaController {
         return ResponseEntity.ok(service.listarTodasContas());
     }
 
-    @GetMapping("/{numeroDaConta}")
+    @GetMapping("/numero/{numeroDaConta}")
     public ResponseEntity<ContaResumoDTO> buscarContaPorNumero(@PathVariable String numeroDaConta) {
         return ResponseEntity.ok(service.buscarContaPorNumero(numeroDaConta));
     }
 
-    @PutMapping("{numeroDaConta}")
+    @PutMapping("/numero/{numeroDaConta}")
     public ResponseEntity <ContaResumoDTO> atualizarConta(@PathVariable String numeroDaConta, @RequestBody ContaAutualizacao dto) {
         return ResponseEntity.ok(service.atualizarConta(numeroDaConta, dto));
     }
 
-    @DeleteMapping("/{numeroDaConta}")
+    @DeleteMapping("/numero/{numeroDaConta}")
     public ResponseEntity<Void> deletarConta(@PathVariable String numeroDaConta) {
         service.deletarConta(numeroDaConta);
         return ResponseEntity.noContent().build();
         //no content = 203
     }
 
-    @PostMapping("/{numeroDaConta}/sacar")
+    @PostMapping("/numero/{numeroDaConta}/sacar")
     public ResponseEntity<ContaResumoDTO> sacar(@PathVariable String numeroDaConta, @Valid @RequestBody ValorSaqueDepositoDTO dto) {
         return ResponseEntity.ok(service.sacar(numeroDaConta, dto.valor()));
     }
 
-    @PostMapping("/{numeroDaConta}/depositar")
+    @PostMapping("/numero/{numeroDaConta}/depositar")
     public ResponseEntity<ContaResumoDTO> depositar(@PathVariable String numeroDaConta, @Valid @RequestBody ValorSaqueDepositoDTO dto) {
         return ResponseEntity.ok(service.depositar(numeroDaConta, dto.valor()));
     }
 
-    @PostMapping("/{numeroDaConta}/transferir/")
+    @PostMapping("/numero/{numeroDaConta}/transferir/")
     public ResponseEntity <ContaResumoDTO> transferir(@PathVariable String numeroDaConta, @RequestBody TransferenciaDTO dto) {
         return ResponseEntity.ok(service.transferir(numeroDaConta, dto));
     }

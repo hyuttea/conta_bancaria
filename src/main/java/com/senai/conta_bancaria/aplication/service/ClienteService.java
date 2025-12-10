@@ -8,7 +8,8 @@ import com.senai.conta_bancaria.domain.enums.Role;
 import com.senai.conta_bancaria.domain.exceptions.ContaMesmoTipoException;
 import com.senai.conta_bancaria.domain.exceptions.EntidadeNaoEncontradaException;
 import com.senai.conta_bancaria.domain.repository.ClienteRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,14 +23,13 @@ import java.util.List;
 public class ClienteService {
 
     private final ClienteRepository repository;
-
+    private final PasswordEncoder passwordEncoder;
     public ClienteResponseDTO registarClienteOuAnexarConta(ClienteCadastroDTO dto) {
 
-        var cliente = repository.findByCpfAndAtivoTrue(dto.cpf()).orElseGet(
+        var cliente = repository.findByCpf(dto.cpf()).orElseGet(
                 () -> repository.save(dto.toEntity())
         );
 
-        System.out.println(cliente);
 
         var contas = cliente.getContas();
         var novaConta = dto.contaDTO().toEntity(cliente);
@@ -42,28 +42,29 @@ public class ClienteService {
 
         cliente.getContas().add(novaConta);
 
-        System.out.println(cliente.getContas());
-
-        System.out.println(repository.save(cliente));
-
-        System.out.println(ClienteResponseDTO.fromEntity(cliente));
-
+        cliente.setSenha(passwordEncoder.encode(dto.senha()));
         return ClienteResponseDTO.fromEntity(repository.save(cliente));
     }
-
+    @Transactional(readOnly = true)
     public List<ClienteResponseDTO> listarClientesAtivos() {
-        return repository.findAllByAtivoTrue().stream()
+
+        List<ClienteResponseDTO> lista = repository.findAll().stream()
                 .map(ClienteResponseDTO::fromEntity)
                 .toList();
-    }
 
+        System.out.println(repository.findAll());
+
+        return lista;
+    }
+    @Transactional(readOnly = true)
     public ClienteResponseDTO buscarClienteAtivoPorCpf(String cpf) {
-        var cliente = buscarPorCpfClienteAtivo(cpf);
+        var cliente = buscarPorCpfCliente(cpf);
+        System.out.println(cliente);
         return ClienteResponseDTO.fromEntity(cliente);
     }
 
     public ClienteResponseDTO atualizarCliente(String cpf, ClienteCadastroDTO dto) {
-        var cliente = buscarPorCpfClienteAtivo(cpf);
+        var cliente = buscarPorCpfCliente(cpf);
 
         cliente.setNomeCompleto(dto.nomeCompleto());
         cliente.setCpf(dto.cpf());
@@ -72,7 +73,7 @@ public class ClienteService {
     }
 
     public void deletarCliente(String cpf) {
-        var cliente = buscarPorCpfClienteAtivo(cpf);
+        var cliente = buscarPorCpfCliente(cpf);
 
         cliente.setAtivo(false);
         cliente.getContas().forEach(c -> c.setAtivo(false));
@@ -80,8 +81,8 @@ public class ClienteService {
         repository.save(cliente);
     }
 
-    private ClienteEntity buscarPorCpfClienteAtivo(String cpf) {
-        var cliente = repository.findByCpfAndAtivoTrue(cpf)
+    private ClienteEntity buscarPorCpfCliente(String cpf) {
+        var cliente = repository.findByCpf(cpf)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Cliente")); //Só deleta caso o cliente pedir, caso contrário ele constinua inativo
         return cliente;
     }

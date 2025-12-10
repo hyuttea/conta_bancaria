@@ -38,7 +38,7 @@ public class TaxaAppService {
         );
     }
 
-    public TaxaDTO atualizar(String id, BigDecimal valor, TaxaDTO dtoAtualizado) {
+    public TaxaDTO atualizar(String id, TaxaDTO dtoAtualizado) {
         TaxaEntity existente = repository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Taxa não encontrada"));
 

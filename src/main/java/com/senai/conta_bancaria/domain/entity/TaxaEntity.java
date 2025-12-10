@@ -6,21 +6,22 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Data
-@SuperBuilder
-@DiscriminatorValue("TAXA")
+@Builder
 
-public class TaxaEntity extends ContaEntity {
-
+public class TaxaEntity {
+@Id
+@GeneratedValue(strategy = GenerationType.UUID)
+private String id;
 
     @DecimalMin("3.0")
     @NotNull
@@ -33,8 +34,5 @@ public class TaxaEntity extends ContaEntity {
     @ManyToMany(mappedBy = "taxas")
     private List<PagamentoEntity> pagamentos = new ArrayList<>();
 
-    @Override
-    public String getTipoConta() {
-        return "TAXA";
-    }
+
 }
