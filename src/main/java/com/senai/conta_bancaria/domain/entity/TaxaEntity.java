@@ -21,9 +21,6 @@ import java.util.List;
 
 public class TaxaEntity extends ContaEntity {
 
-    @NotBlank
-    @Column (name = "descricao", nullable = false, length = 100)
-    private Descricao descricao;
 
     @DecimalMin("3.0")
     @NotNull

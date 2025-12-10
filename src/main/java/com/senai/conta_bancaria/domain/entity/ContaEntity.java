@@ -13,12 +13,15 @@ import java.math.BigDecimal;
 @Entity
 @Data
 @NoArgsConstructor
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE) //Ela é uma herança, que usamos quando haverá uma tabela. Parrecido com a MappedSuperClass
-@DiscriminatorColumn(name = "tipo_conta", discriminatorType = DiscriminatorType.STRING, length = 20) //Discrimina o tipo de classe que estu salvando
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+//Ela é uma herança, que usamos quando haverá uma tabela. Parrecido com a MappedSuperClass
+@DiscriminatorColumn(name = "tipo_conta", discriminatorType = DiscriminatorType.STRING, length = 20)
+//Discrimina o tipo de classe que estu salvando
 @Table(
         name = "conta",
-        uniqueConstraints = { @UniqueConstraint(name = "uk_conta_numero", columnNames = "numero"),
-        @UniqueConstraint(name = "uk_cliente_tipo", columnNames = {"cliente_id", "tipo_conta"})
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uk_conta_numero", columnNames = "numero"),
+                @UniqueConstraint(name = "uk_cliente_tipo", columnNames = {"cliente_id", "tipo_conta"})
         }
 )
 @SuperBuilder //para heranças
@@ -37,7 +40,7 @@ public abstract class ContaEntity {
     private boolean ativo;
 
     @ManyToOne(fetch = FetchType.LAZY) // Busca preguiçosa
-    @JoinColumn (
+    @JoinColumn(
             name = "cliente_id",
             foreignKey = @ForeignKey(name = "fk_conta_cliente")
     )
@@ -55,7 +58,7 @@ public abstract class ContaEntity {
         this.saldo = this.saldo.subtract(valor); //substrai o valor do saldo
     }
 
-    public void depositar(BigDecimal valor){
+    public void depositar(BigDecimal valor) {
         validarValorMaiorQueZero(valor, "depósito");
         this.saldo = this.saldo.add(valor);
     }

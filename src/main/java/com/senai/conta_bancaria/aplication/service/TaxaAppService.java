@@ -44,7 +44,6 @@ public class TaxaAppService {
 
         existente.setPercentual(dtoAtualizado.percentual());
         existente.setValorFixo(dtoAtualizado.valorFixo());
-        existente.setDescricao(dtoAtualizado.descricao());
 
         TaxaEntity salvo = repository.save(existente);
 

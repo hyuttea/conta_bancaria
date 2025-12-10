@@ -16,8 +16,6 @@ import java.math.BigDecimal;
 @Builder
 public record TaxaDTO(
 
-        @NotBlank
-        Descricao descricao,
 
         @NotNull
         @DecimalMin(value = "0.0", inclusive = false, message = "O percentual deve ser maior que zero.")
@@ -29,7 +27,6 @@ public record TaxaDTO(
 
     public static TaxaDTO fromEntity(TaxaEntity taxa) {
         return new TaxaDTO(
-                taxa.getDescricao(),
                 taxa.getPercentual(),
                 taxa.getValorFixo()
         );
@@ -37,7 +34,6 @@ public record TaxaDTO(
 
     public TaxaEntity toEntity(){
         return TaxaEntity.builder()
-                .descricao(descricao)
                 .percentual(new BigDecimal("3.00"))
                 .valorFixo(valorFixo)
                 .build();
